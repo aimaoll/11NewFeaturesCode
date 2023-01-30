@@ -1,0 +1,4 @@
+﻿  C++11.cpp
+D:\VS2019Programe\C++11\C++11.cpp(47,14): warning C4244: “初始化”: 从“long double”转换到“int”，可能丢失数据
+D:\VS2019Programe\C++11\C++11.cpp(47,22): warning C4244: “初始化”: 从“long double”转换到“int”，可能丢失数据
+  C++11.vcxproj -> D:\VS2019Programe\C++11\Debug\C++11.exe
