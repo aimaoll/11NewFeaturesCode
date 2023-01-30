@@ -8,6 +8,13 @@ int size()
     return 1;
 }
 
+struct Sales_date
+{
+    std::string bookNo;
+    unsigned units_sold = 0;
+    double revenue = 0.0;
+};
+
 int i = 0;
 constexpr int j = 0;
 
@@ -91,13 +98,35 @@ int main()
         LD a = 0; // 等价于long double a = 0;
     }
 
-    if (1)
+    if (0)
     {
         // C++11新标准引入auto类型说明符,让编译器通过初始值来推断变量的类型,显然auto定义的变量必须有初始值
         int a = 0, b = 1;
         auto c = a + b; // c的类型是int
-        // auto也能在一条
+        // auto也能在一条语句中声明多个变量,因为一条声明语句只能有一个基本数据类型,所以该语句中所有变量的初始基本数据类型必须一样
+        auto i = 0, * p = &i; // i为整数,p为整型指针
+        //auto j = 0, k = 0.01; error:j和k类型不一致
+    }
 
+    if (0)
+    {
+        // decltype:选择并返回操作数的数据类型,编译器分析表达式并得到它的类型,却不实际计算表达式的值
+        float x = 12.34;
+        decltype(size()) sum = x; // sum的类型就是函数size的返回类型
+        std::cout << sum;
+    }
+
+    if (1)
+    {
+        /* C++11新标准规定,可以为数据成员提供一个类内初始值
+        *  创建对象时,类内初始值将用于初始化数据成员,没有初始值的成员将被默认初始化
+        */
+        Sales_date a;
+        // 定义Sales_date对象时,units_sold和revenue都将初始化为0,bookNo将初始化为空字符串
+        std::cout << a.units_sold << "--" << a.revenue << "--" << a.bookNo << "--";
+        // C++11新标准允许编译器通过auto或decltype来推断变量的类型
+        std::string b = "1";
+        auto c = b.size(); // c的类型是std::string::size_type
     }
 
     return 0;
