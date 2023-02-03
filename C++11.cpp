@@ -134,6 +134,27 @@ int main()
         decltype(size()) sum = x; // sum的类型就是函数size的返回类型
         std::cout << sum;
     }
+    
+    /* 使用auto和decltype简化声明 */
+    if (0)
+    {
+        int ia[3][4] = {0}; // 大小为3的数组,每个元素是含有4个整数的数组
+        int(*p)[4] = ia; // p指向含有4个整数的数组
+        p = &ia[2]; // p指向ia的尾元素,等同于p = ia + 2;
+        
+        /* C++11新标准使得通过auto或decltype就能尽可能避免在数组前面加上一个指针类型
+        *  虽然能推断出p的类型是指向含有4个整数的数组的指针,q的类型是指向整数的指针
+        *  但是使用auto关键字后就不必烦心这些类型到底是什么了
+        */
+        for (auto p = begin(ia); p != end(ia); ++p)
+        {
+            for (auto q = begin(*p); q != end(*p); ++q)
+            {
+                cout << *q << ' ';
+            }
+            cout << endl;
+        }
+    }
 
     /* 类内初始化 */
     if (0)
@@ -175,6 +196,19 @@ int main()
             c = toupper(c); // c是一个引用,因此赋值语句将改变s中字符的值
         }
         cout << s << endl;
+
+        vector<int> v = { 0, 1, 2, 3 };
+        for (auto& r : v) // 范围变量必须是引用类型,这样才能对元素执行写操作
+        {
+            r *= 2;
+            cout << r << " ";
+        }
+        // 范围for语句定义来源于与之等价的传统for语句
+        for (auto beg = v.begin(), end = v.end(); beg != end; ++beg)
+        {
+            auto& r = *beg;
+            r *= 2;
+        }
     }
 
     /* 定义vector对象的vector(向量的向量) */
@@ -219,27 +253,6 @@ int main()
         }
     }
 
-    /* 使用auto和decltype简化声明 */
-    if (0)
-    {
-        int ia[3][4] = {0}; // 大小为3的数组,每个元素是含有4个整数的数组
-        int(*p)[4] = ia; // p指向含有4个整数的数组
-        p = &ia[2]; // p指向ia的尾元素,等同于p = ia + 2;
-        
-        /* C++11新标准使得通过auto或decltype就能尽可能避免在数组前面加上一个指针类型
-        *  虽然能推断出p的类型是指向含有4个整数的数组的指针,q的类型是指向整数的指针
-        *  但是使用auto关键字后就不必烦心这些类型到底是什么了
-        */
-        for (auto p = begin(ia); p != end(ia); ++p)
-        {
-            for (auto q = begin(*p); q != end(*p); ++q)
-            {
-                cout << *q << ' ';
-            }
-            cout << endl;
-        }
-    }
-
     /* 除法的舍入规则 */
     if (0)
     {
@@ -250,10 +263,21 @@ int main()
     }
 
     /* 将sizeof用于类成员 */
+    if (0)
+    {
+        /* C++11新标准允许使用作用域运算符来获取类成员大小
+        *  通常情况下只有通过类的对象才能访问到类的成员
+        *  但是sizeof无须我们提供一个具体的对象,因为想知道类成员的大小无须真的获取该成员
+        */
+        cout << sizeof(Sales_date::revenue) << endl;
+    }
+
+    /* 标准库initializer_list类 */
     if (1)
     {
 
     }
+
 
     return 0;
 }
