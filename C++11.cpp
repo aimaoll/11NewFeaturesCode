@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <initializer_list>
 using namespace std;
 
 int size()
@@ -19,6 +20,30 @@ struct Sales_date
 
 int i = 0;
 constexpr int j = 0;
+
+void error_msg(initializer_list<string> il)
+{
+    for (auto beg = il.begin(); beg != il.end(); ++beg)
+    {
+        cout << *beg << " ";
+    }
+    cout << endl;
+}
+
+struct ErrCode
+{
+    int errorCode = 0;
+};
+
+void error_msg(ErrCode e, initializer_list<string> il)
+{
+    cout << e.errorCode << ":";
+    for (auto beg = il.begin(); beg != il.end(); ++beg)
+    {
+        cout << *beg << " ";
+    }
+    cout << endl;
+}
 
 int main()
 {
@@ -275,7 +300,26 @@ int main()
     /* 标准库initializer_list类 */
     if (1)
     {
-
+        /* initializer_list是一种标准库类型,用于表示某种特定类型的值的数组
+        *  和vector一样,initializer_list也是一种模板类型,定义initializer_list类型时,必须说明列表中的元素类型
+        */ 
+        initializer_list<string> ls; // initializer_list的元素类型是string
+        initializer_list<int> li; // initializer_list的元素类型是int
+        // 和vector不一样的是,initializer_list对象中的元素永远是常量值,无法改变initializer_list对象中元素的值
+        // 想向initializer_list形参中传递一个值的序列,则必须把序列放在一对花括号内
+        string expected("Error:4096"), actual("Error:4097");
+        if (expected != actual)
+        {
+            error_msg({ "functionX", expected, actual });
+        }
+        else
+        {
+            error_msg({ "functionX", "okay" });
+        }
+        // 含initializer_list形参的函数也可以同时拥有其他形参
+        ErrCode errcode;
+        errcode.errorCode = 4099;
+        error_msg(errcode, { "functionX", expected, actual });
     }
 
 
